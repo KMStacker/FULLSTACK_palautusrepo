@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './index.css'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
   const [newBlogTitle, setNewBlogTitle] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
@@ -44,10 +46,14 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setErrorMessage('wrong credentials')
+      setNotification({message: `Login successful, welcome ${user.name}!`, type: 'notificationGood'})
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification(null)
+      }, 5000)
+    } catch (exception) {
+      setNotification({message: 'Wrong credentials!', type: 'notificationBad'})
+      setTimeout(() => {
+        setNotification(null)
       }, 5000)
       console.log(exception)
     }
@@ -56,6 +62,10 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
+    setNotification({message: `Goodbye and be good, ${user.name}!`, type: 'notificationGood'})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
   }
 
   const handleCreateBlog = async (event) => {
@@ -71,7 +81,15 @@ const App = () => {
       setNewBlogTitle('')
       setNewBlogAuthor('')
       setNewBlogUrl('')
+      setNotification({message: 'A new blog named as ' + newBlog.title + ' has been created!', type: 'notificationGood'})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     } catch (exception) {
+      setNotification({message: 'Error occured while trying to create blog', type: 'notificationBad'})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
       console.log(exception)
     }
   }
@@ -141,7 +159,8 @@ const App = () => {
   )
 
   return (
-    <div> 
+    <div>
+      <Notification notification={notification} />
       {!user && loginForm()}
       {user && <div>
         <h2>Blogs</h2>
