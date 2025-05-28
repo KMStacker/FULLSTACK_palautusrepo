@@ -1,4 +1,5 @@
 /* src/index.css */
+
 .notificationGood {
     color: green;
     background: lightgrey;
@@ -17,4 +18,27 @@
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.create-a-new-blog {
+    margin-bottom: 6.6px;
+}
+
+.list-of-all-blogs {
+    margin-bottom: 6.6px;
+}
+
+.BIG-blogs {
+    margin-top: 6.9px;
+    margin-bottom: 6.9px;
+}
+
+body {
+    background-color: rgb(100, 222, 100);
+    border: 3px dashed rgb(88, 14, 14);
+    padding: 7px;
+}
+
+.small-space-after {
+    margin-bottom: 5px;
 }
