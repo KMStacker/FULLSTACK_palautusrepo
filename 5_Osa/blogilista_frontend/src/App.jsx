@@ -131,6 +131,36 @@ const App = () => {
     }
   }
 
+  const handleDeleteBlog = async (idOfBlog) => {
+    const blogToDelette = blogs.find(blog => blog.id === idOfBlog)
+    if (!blogToDelette) {
+      console.error('Blog not found')
+      setNotification({message: 'Blog not found', type: 'notificationBad'})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+      return
+    }
+
+    if (window.confirm(`Delete ${blogToDelette.title}?`)) {
+      try {
+        await blogService.remove(idOfBlog)
+        setBlogs(blogs.filter(blog => blog.id !== idOfBlog))
+        setNotification({
+          message: 'You deleted a blog named as ' + blogToDelette.title + '!', type: 'notificationGood'})
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+      } catch (exception) {
+        setNotification({message: 'Error occured while trying to delete blog', type: 'notificationBad'})
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+        console.log(exception)
+      }
+    }
+  }
+
   const loginForm = () => {
     const hideWhenVisible = { display: loginVisible ? 'none' : '' }
     const showWhenVisible = { display: loginVisible ? '' : 'none' }
@@ -168,8 +198,16 @@ const App = () => {
         </Togglable>
         <br />
         <h4 className="list-of-all-blogs">list of all blogs</h4>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)}/>
+        {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map(blog =>
+            <Blog 
+              key={blog.id} 
+              blog={blog} 
+              handleLike={() => handleLike(blog.id)}
+              handleDeleteBlog={() => handleDeleteBlog(blog.id)}
+              user={user}
+            />
         )}
       </div>
       }

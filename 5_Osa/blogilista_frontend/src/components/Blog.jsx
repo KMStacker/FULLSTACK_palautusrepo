@@ -1,7 +1,7 @@
 // src/components/Blog.jsx
 import { useState } from 'react'
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleDeleteBlog, user }) => {
   const [infoVisible, setInfoVisible] = useState(false)
 
   const toggleInfoVisibility = () => {
@@ -22,12 +22,15 @@ const Blog = ({ blog, handleLike }) => {
             {blog.url}
           </p>
           <p>
-            {blog.likes} likes
+            {blog.likes} likes &nbsp;
             <button onClick={handleLike}>like</button>
           </p>
           <p>
             {blog.user.name}
           </p>
+          {user.username === blog.user.username && (
+            <button onClick={handleDeleteBlog}>remove</button>
+          )}
         </div>
       )}
     </div>
