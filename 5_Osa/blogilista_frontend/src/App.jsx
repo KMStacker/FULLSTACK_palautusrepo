@@ -92,6 +92,45 @@ const App = () => {
     }
   }
 
+  const handleLike = async (idOfBlog) => {
+    const blogToUpdate = blogs.find(blog => blog.id === idOfBlog)
+    if (!blogToUpdate) {
+      console.error('Blog not found')
+      setNotification({message: 'Blog not found', type: 'notificationBad'})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+      return
+      }
+
+    const likedBlog = {
+      user: blogToUpdate.user.id,
+      likes: blogToUpdate.likes + 1,
+      title: blogToUpdate.title,
+      author: blogToUpdate.author,
+      url: blogToUpdate.url
+    }
+
+    try {
+      let likedBlogUpdate = await blogService.update(idOfBlog, likedBlog)
+      likedBlogUpdate = { ...likedBlogUpdate, user: blogToUpdate.user }
+      
+      setBlogs(blogs.map(blog => 
+        blog.id !== idOfBlog ? blog : likedBlogUpdate))
+      setNotification({
+        message: 'You liked a blog named as ' + likedBlogUpdate.title + '!', type: 'notificationGood'})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    } catch (exception) {
+      setNotification({message: 'Error occured while trying to like blog', type: 'notificationBad'})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+      console.log(exception)
+    }
+  }
+
   const loginForm = () => {
     const hideWhenVisible = { display: loginVisible ? 'none' : '' }
     const showWhenVisible = { display: loginVisible ? '' : 'none' }
@@ -130,7 +169,7 @@ const App = () => {
         <br />
         <h4 className="list-of-all-blogs">list of all blogs</h4>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)}/>
         )}
       </div>
       }

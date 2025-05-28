@@ -1,44 +1,55 @@
 /* src/index.css */
 
 .notificationGood {
-    color: green;
-    background: lightgrey;
-    font-size: 20px;
-    border-style: solid;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .notificationBad {
-    color: red;
-    background: lightgrey;
-    font-size: 20px;
-    border-style: solid;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .create-a-new-blog {
-    margin-bottom: 6.6px;
+  margin-bottom: 6.6px;
 }
 
 .list-of-all-blogs {
-    margin-bottom: 6.6px;
+  margin-bottom: 6.6px;
 }
 
 .BIG-blogs {
-    margin-top: 6.9px;
-    margin-bottom: 6.9px;
+  margin-top: 6.9px;
+  margin-bottom: 6.9px;
 }
 
 body {
-    background-color: rgb(100, 222, 100);
-    border: 3px dashed rgb(88, 14, 14);
-    padding: 7px;
+  background-color: rgb(100, 222, 100);
+  border: 3px dashed rgb(88, 14, 14);
+  padding: 7px;
 }
 
 .small-space-after {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.blog-style {
+  padding: 2px;
+  border: solid darkgreen 1px;
+  margin-bottom: 3px;
+}
+
+.p-row-spaces p {
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
