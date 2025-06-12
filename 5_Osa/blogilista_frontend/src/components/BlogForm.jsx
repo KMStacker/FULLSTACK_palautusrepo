@@ -1,5 +1,6 @@
 // src/components/BlogForm.jsx
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
@@ -8,16 +9,16 @@ const BlogForm = ({ createBlog }) => {
 
   const addBlog = async (event) => {
     event.preventDefault()
-    await createBlog({ 
+    await createBlog({
       title: title,
       author: author,
-      url: url 
+      url: url
     })
     setTitle('')
     setAuthor('')
     setUrl('')
   }
-  
+
   return (
     <div className="small-space-after">
       <h2 className="create-a-new-blog">create a new blog</h2>
@@ -53,6 +54,10 @@ const BlogForm = ({ createBlog }) => {
       </form>
     </div>
   )
+}
+
+BlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
