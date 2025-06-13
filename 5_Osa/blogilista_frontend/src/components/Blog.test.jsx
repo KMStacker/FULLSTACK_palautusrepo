@@ -92,10 +92,10 @@ test('clicking like twice calls event handler twice', async () => {
 
 // 5.16
 test('calls handler with right parameters when blog created', async () => {
-  const testCreateBlog = vitest.fn()
+  const createBlog = vitest.fn()
   const user = userEvent.setup()
 
-  render(<BlogForm testCreateBlog={testCreateBlog} />)
+  render(<BlogForm createBlog={createBlog} />)
 
   const title = screen.getByPlaceholderText('write title here')
   const author = screen.getByPlaceholderText('write author here')
@@ -108,8 +108,8 @@ test('calls handler with right parameters when blog created', async () => {
 
   await user.click(createButton)
 
-  expect(testCreateBlog.mock.calls).toHaveLength(1)
-  expect(testCreateBlog.mock.calls[0][0]).toEqual({
+  expect(createBlog.mock.calls).toHaveLength(1)
+  expect(createBlog.mock.calls[0][0]).toEqual({
     title: 'title test',
     author: 'author test',
     url: 'urltest.com'
