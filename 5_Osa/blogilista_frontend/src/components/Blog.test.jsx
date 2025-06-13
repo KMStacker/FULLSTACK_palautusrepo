@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import { expect, test, vitest } from 'vitest'
+import BlogForm from './BlogForm'
 
 // 5.13
 test('renders title and author', () => {
@@ -47,12 +48,10 @@ test('all info shown when button clicked', async () => {
     author: 'author test',
     url: 'urltest.com',
     likes: 0,
-    user: { name: 'user test' }
+    user: { name: 'user test', username: 'username test' }
   }
 
-  const mockHandler = vitest.fn()
-
-  render(<Blog blog={blog} toggleVisibility={mockHandler} />)
+  render(<Blog blog={blog} user={blog.user} />)
 
   const user = userEvent.setup()
   const button = screen.getByText('view')
@@ -64,4 +63,55 @@ test('all info shown when button clicked', async () => {
   expect(likes).toBeDefined()
   const userName = screen.getByText('user test')
   expect(userName).toBeDefined()
+})
+
+// 5.15
+test('clicking like twice calls event handler twice', async () => {
+  const blog = {
+    title: 'title test',
+    author: 'author test',
+    url: 'urltest.com',
+    likes: 0,
+    user: { name: 'user test', username: 'username test' }
+  }
+
+  const mockHandler = vitest.fn()
+
+  render(<Blog blog={blog} user={blog.user} handleLike={mockHandler} />)
+
+  const user = userEvent.setup()
+  const viewbutton = screen.getByText('view')
+  await user.click(viewbutton)
+
+  const likebutton = screen.getByText('like')
+  await user.click(likebutton)
+  await user.click(likebutton)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
+})
+
+// 5.16
+test('calls handler with right parameters when blog created', async () => {
+  const testCreateBlog = vitest.fn()
+  const user = userEvent.setup()
+
+  render(<BlogForm testCreateBlog={testCreateBlog} />)
+
+  const title = screen.getByPlaceholderText('write title here')
+  const author = screen.getByPlaceholderText('write author here')
+  const url = screen.getByPlaceholderText('write url here')
+  const createButton = screen.getByText('create')
+
+  await user.type(title, 'title test')
+  await user.type(author, 'author test')
+  await user.type(url, 'urltest.com')
+
+  await user.click(createButton)
+
+  expect(testCreateBlog.mock.calls).toHaveLength(1)
+  expect(testCreateBlog.mock.calls[0][0]).toEqual({
+    title: 'title test',
+    author: 'author test',
+    url: 'urltest.com'
+  })
 })
