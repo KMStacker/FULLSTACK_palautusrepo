@@ -16,19 +16,19 @@ describe('Blog app', () => {
     await page.goto('http://localhost:5173')
   })
 
-  test('Login form can be opened and after click is shown', async ({ page }) => {
-    const loginButton = page.getByRole('button', { name: 'log in' })
-    await expect(loginButton).toBeVisible()
+  test('Login form is shown', async ({ page }) => {
+    //const loginButton = page.getByRole('button', { name: 'log in' })
+    //await expect(loginButton).toBeVisible()
 
-    await loginButton.click()
+    //await loginButton.click()
     await expect(page.getByRole('heading', { name: 'Log in to application' })).toBeVisible()
   })
 
   describe('Login', () => {
-    beforeEach(async ({ page }) => {
-      const loginButton = page.getByRole('button', { name: 'log in' })
-      await loginButton.click()
-    })
+    //beforeEach(async ({ page }) => {
+      //const loginButton = page.getByRole('button', { name: 'log in' })
+      //await loginButton.click()
+    //})
 
     test('succeeds with correct credentials', async ({ page }) => {
       await page.getByTestId('username').fill('mluukkai')

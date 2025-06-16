@@ -162,13 +162,13 @@ const App = () => {
   }
 
   const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+    const hideWhenVisible = { display: loginVisible ? '' : 'none' }
+    const showWhenVisible = { display: loginVisible ? 'none' : '' }
 
     return (
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
+          <button onClick={() => setLoginVisible(false)}>log in</button>
         </div>
         <div style={showWhenVisible}>
           <LoginForm
@@ -178,7 +178,7 @@ const App = () => {
             handlePasswordChange={({ target }) => setPassword(target.value)}
             handleSubmit={handleLogin}
           />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
+          <button onClick={() => setLoginVisible(true)}>cancel</button>
         </div>
       </div>
     )
