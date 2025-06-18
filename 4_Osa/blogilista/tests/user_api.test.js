@@ -1,9 +1,11 @@
+// 4_Osa/blogilista/tests/user_api.test.js
 const { test, after, beforeEach, describe } = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const assert = require('node:assert')
 const User = require('../models/user')
+const Blog = require('../models/blog')
 const bcrypt = require('bcrypt')
 
 const api = supertest(app)
@@ -31,6 +33,7 @@ const originalUsers = [
 // @@@@@ tests @@@@@
 
 beforeEach(async () => {
+  await Blog.deleteMany({})
   await User.deleteMany({})
   
   const saltRounds = 10
@@ -75,8 +78,27 @@ describe('User API tests', () => {
       assert(usernames.includes(newUser.username))
     })
     
+    test('fails withstatus code 400 and message if password is too short', async () => {
+      const userLengthAtStart = (await User.find({})).length
+
+      const newUser = {
+        username: 'testaaja1',
+        name: 'Test User222',
+        password: 'ps'
+      }
+      const result = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+      assert(result.body.error.includes('password missing or too short'))
+
+      const userLengthAtEnd = (await User.find({})).length
+      assert.strictEqual(userLengthAtEnd, userLengthAtStart)
+    })
+
     test('fails withstatus code 400 and message if username is too short', async () => {
-      const userLengthAtStart = await User.find({}).length
+      const userLengthAtStart = (await User.find({})).length
 
       const newUser = {
         username: 't1',
@@ -88,33 +110,14 @@ describe('User API tests', () => {
         .send(newUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
-      assert(result.body.error.includes('is shorter than the minimum allowed length (3)'))
+      assert(result.body.error.includes('is shorter than the minimum allowed length'))
 
-      const userLengthAtEnd = await User.find({}).length
+      const userLengthAtEnd = (await User.find({})).length
       assert.strictEqual(userLengthAtEnd, userLengthAtStart)
     })
 
-    test('fails withstatus code 400 and message if password is too short', async () => {
-      const userLengthAtStart = await User.find({}).length
-
-      const newUser = {
-        username: 'testaaja1',
-        name: 'Test User1',
-        password: 'ps'
-      }
-      const result = await api
-        .post('/api/users')
-        .send(newUser)
-        .expect(400)
-        .expect('Content-Type', /application\/json/)
-      assert(result.body.error.includes('password missing or too short'))
-
-      const userLengthAtEnd = await User.find({}).length
-      assert.strictEqual(userLengthAtEnd, userLengthAtStart)
-    })
-
-    test('fails withstatus code 400 and message if username is not unique', async () => {
-      const userLengthAtStart = await User.find({}).length
+    test('fails with status code 400 and message if username is not unique', async () => {
+      const userLengthAtStart = (await User.find({})).length
 
       const newUser = {
         username: 'unique',
@@ -128,6 +131,7 @@ describe('User API tests', () => {
         .expect('Content-Type', /application\/json/)
 
       const usersAtEnd = await User.find({})
+      assert.strictEqual(usersAtEnd.length, userLengthAtStart + 1)
       const usernames = usersAtEnd.map(user => user.username)
       assert(usernames.includes(newUser.username))
 
@@ -136,6 +140,7 @@ describe('User API tests', () => {
         .send(newUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
+
       assert(secondAdd.body.error.includes('expected `username` to be unique'))
 
       const usersAtEndEnd = await User.find({})

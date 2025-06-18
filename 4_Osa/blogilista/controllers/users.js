@@ -1,3 +1,4 @@
+// 4_osa/blogilista/controllers/users.js
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
@@ -9,6 +10,7 @@ usersRouter.get('/', async (request, response, next) => {
   response.json(users)
 })
 
+// POST
 usersRouter.post('/', async (request, response, next) => {
   const body = request.body
 
@@ -16,16 +18,17 @@ usersRouter.post('/', async (request, response, next) => {
     return response.status(400).json({ error: 'password missing or too short' })
   }
 
+
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(body.password, saltRounds)
-  // console.log(passwordHash)
 
   const user = new User({
-        
     username: body.username,
     name: body.name,
     passwordHash,
   })
+
+  
 
   const savedUser = await user.save()
 

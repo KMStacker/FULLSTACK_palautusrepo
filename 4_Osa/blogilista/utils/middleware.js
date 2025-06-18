@@ -1,4 +1,4 @@
-// utils/middleware.js
+// 4_Osa/blogilista/utils/middleware.js
 const logger = require('./logger')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')

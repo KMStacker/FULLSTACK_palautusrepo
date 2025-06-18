@@ -15,21 +15,14 @@ describe('Blog app', () => {
 
     await page.goto('http://localhost:5173')
   })
-
+  
+  // 5.17
   test('Login form is shown', async ({ page }) => {
-    //const loginButton = page.getByRole('button', { name: 'log in' })
-    //await expect(loginButton).toBeVisible()
-
-    //await loginButton.click()
     await expect(page.getByRole('heading', { name: 'Log in to application' })).toBeVisible()
   })
 
+  // 5.18
   describe('Login', () => {
-    //beforeEach(async ({ page }) => {
-      //const loginButton = page.getByRole('button', { name: 'log in' })
-      //await loginButton.click()
-    //})
-
     test('succeeds with correct credentials', async ({ page }) => {
       await page.getByTestId('username').fill('mluukkai')
       await page.getByTestId('password').fill('salainen')
@@ -44,7 +37,38 @@ describe('Blog app', () => {
       await page.getByRole('button', { name: 'login' }).click() 
       
       await expect(page.locator('.notificationBad')).toBeVisible()
-      //await expect(page.getByText('Wrong credentials')).toBeVisible()
     })
   })
+
+  // 5.19
+  describe('When logged in', () => {
+    beforeEach(async ({ page }) => {
+    await page.getByTestId('username').fill('mluukkai')
+    await page.getByTestId('password').fill('salainen')
+    await page.getByRole('button', { name: 'login' }).click()
+    })
+
+    test('a new blog can be created', async ({ page }) => {
+      // open add blog form
+      await page.getByRole('button', { name: 'create a new blog' }).click()
+      
+      // create title author and url
+      const title = 'test title'
+      const author = 'test author'
+      const url = 'test url'
+
+      // fill in blog form
+      await page.getByPlaceholder('write title here').fill(title)
+      await page.getByPlaceholder('write author here').fill(author)
+      await page.getByPlaceholder('write url here').fill(url)
+
+      // click create and check notification
+      await page.getByRole('button', { name: 'create' }).click()
+      await expect(page.locator('.notificationGood')).toBeVisible()
+
+      // check if blog is in the list
+      await expect(page.getByText(`${title} ${author}`)).toBeVisible()
+    })
+  })
+
 })
