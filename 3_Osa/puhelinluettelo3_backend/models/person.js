@@ -13,7 +13,7 @@ if (!url) {
 console.log('connecting to MongoDB . . .')
 
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
