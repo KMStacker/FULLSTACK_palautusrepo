@@ -6,7 +6,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development node --watch index.js",
     "start:test": "cross-env NODE_ENV=test node --watch index.js",
-    "test": "cross-env  NODE_ENV=test node --test",
+    "test": "cross-env  NODE_ENV=test node --test --test-concurrency=1",
     "test:frontend": "cross-env NODE_ENV=test node --test tests/list_helper.test.js",
     "test:backend": "cross-env NODE_ENV=test node --test tests/blog_api.test.js",
     "test:user": "cross-env NODE_ENV=test node --test tests/user_api.test.js",
