@@ -74,7 +74,8 @@ const App = () => {
 
     try {
       const newBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(newBlog))
+      const newBlogWithAllInfo = { ...newBlog, user: user }
+      setBlogs(blogs.concat(newBlogWithAllInfo))
 
       setNotification({ message: 'A new blog named as ' + newBlog.title + ' has been created!', type: 'notificationGood' })
       setTimeout(() => {

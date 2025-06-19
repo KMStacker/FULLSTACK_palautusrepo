@@ -5,7 +5,8 @@
   "scripts": {
     "test": "playwright test",
     "test:report": "playwright show-report",
-    "test:chromium:ui": "playwright test --project chromium --ui"
+    "test:chromium:ui": "playwright test --project chromium --ui",
+    "test:chromium": "playwright test --project chromium"
   },
   "keywords": [],
   "author": "",
