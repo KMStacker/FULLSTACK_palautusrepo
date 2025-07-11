@@ -43,4 +43,19 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+export const voteAnecdote = (id) => {
+  return {
+    type: 'VOTE',
+    payload: id
+  }
+}
+
+export const createAnecdote = (content) => {
+  const generateId = () => Number((Math.random() * 1000000).toFixed(0))
+  return {
+    type: 'NEW_ANECDOTE', payload: { content, votes: 0, id: generateId() }
+  }
+}
+    
+
 export default reducer
