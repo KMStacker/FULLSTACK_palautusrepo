@@ -1,3 +1,4 @@
+// src/main.jsx
 import ReactDOM from 'react-dom/client'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'

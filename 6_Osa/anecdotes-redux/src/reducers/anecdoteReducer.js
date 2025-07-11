@@ -1,3 +1,4 @@
+// src/reducers/anecdoteReducer.js
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -31,6 +32,11 @@ const reducer = (state = initialState, action) => {
       
       return state.map(a => a.id !== id ? a : votedAnecdote)
     }
+
+    case 'NEW_ANECDOTE': {
+      return [...state, action.payload]
+    }
+
     default: return state
   }
 }
