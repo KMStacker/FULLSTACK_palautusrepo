@@ -7,17 +7,19 @@ const AnecdoteList = () => {
 
   const anecdotes = useSelector(state => {
     if (state.filter === '') {
-      return state.anecdotes
+      return state.anecdotes //[...state.anecdotes].sort((a, b) => b.votes - a.votes)
     }
-    return state.anecdotes.filter(anecdote =>
-      anecdote.content.toLowerCase().includes(state.filter.toLowerCase())
-    )
+    return state.anecdotes
+      .filter(anecdote =>
+        anecdote.content.toLowerCase().includes(state.filter.toLowerCase())
+      )
+      //.sort((a, b) => b.votes - a.votes)
   })
 
   const dispatch = useDispatch()
 
   const vote = (anecdote) => {
-    dispatch(voteAnecdote(anecdote.id))
+    dispatch(voteAnecdote(anecdote))
     dispatch(setNotification(`You just clicked vote on: '${anecdote.content}'`, 5))
   }
 
