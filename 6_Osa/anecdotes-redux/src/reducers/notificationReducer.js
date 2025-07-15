@@ -1,7 +1,7 @@
 // src/reducers/notificationReducer.js
 import { createSlice } from '@reduxjs/toolkit'
 
-const notificationReducer = createSlice({
+const notificationSlice = createSlice({
   name: 'notification',
   initialState: 'halojata halloo',
   reducers: {
@@ -14,7 +14,7 @@ const notificationReducer = createSlice({
   }
 })
 
-export const { showNotification, hideNotification } = notificationReducer.actions
+export const { showNotification, hideNotification } = notificationSlice.actions
 
 export const setNotification = (text, time) => {
   return async dispatch => {
@@ -25,4 +25,4 @@ export const setNotification = (text, time) => {
   }
 }
 
-export default notificationReducer.reducer
+export default notificationSlice.reducer

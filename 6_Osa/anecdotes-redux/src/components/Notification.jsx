@@ -1,4 +1,4 @@
-// src/components/Notification.js
+// src/components/Notification.jsx
 import { useSelector } from "react-redux"
 
 const Notification = () => {
@@ -10,6 +10,7 @@ const Notification = () => {
     padding: 10,
     borderWidth: 1
   }
+  
   return (
     <div style={style}>
       {notification}
