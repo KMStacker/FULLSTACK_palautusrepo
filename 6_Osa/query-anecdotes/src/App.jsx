@@ -2,15 +2,24 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getAnecdotes, updateAnecdote } from './requests'
+import { useNotificationDispatch } from './hooks'
 
 const App = () => {
 
   const queryClient = useQueryClient()
+  const notificationDispatch = useNotificationDispatch()
 
   const updateAnecdoteMutation = useMutation({
     mutationFn: updateAnecdote,
-    onSuccess: () => {
+    onSuccess: (updateAnecdote) => {
       queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
+      notificationDispatch({
+        type: 'SHOW',
+        payload: `You just clicked vote on: '${updateAnecdote.content}'`
+      })
+      setTimeout(() => {
+        notificationDispatch({ type: 'HIDE' })
+      }, 5000)
     },
   })
 
@@ -32,9 +41,8 @@ const App = () => {
   if (result.isError) {
     return <div>anecdote service not available due to problems in server</div>
   }
-
   
-  const anecdotes = result.data
+  const anecdotes = [...result.data].sort((a, b) => b.votes - a.votes)
 
   return (
     <div>
