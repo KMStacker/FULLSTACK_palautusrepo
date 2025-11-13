@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>routed-anecdotes</title>
+    <style>
+      body {
+        background-color: #272420;
+        color: rgba(162, 168, 135, 0.808);
+        line-height: 2;
+        a, a:link {
+          color: #21aed4; /* Esimerkiksi vaaleansininen, erottuu tummalta taustalta */
+          text-decoration: none; /* Poistaa oletusviivan, jos haluat */
+        }
+        a:visited {
+          color: #8a7cb4; /* Esimerkiksi vaalea liila, näyttää että siellä on käyty */
+        }
+
+      /* 3. Linkin väri, kun hiiri on päällä (hyvä lisäys) */
+        a:hover {
+          color: #dac7c7; /* Muuttuu vaikka valkoiseksi */
+          text-decoration: underline; /* Korostaa alleviivauksella */
+        }
+
+      /* 4. Linkin väri, kun sitä aktiivisesti klikataan (hyvä lisä) */
+        a:active {
+          color: #ff8080; /* Esimerkiksi kirkas punainen hetken ajan */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
