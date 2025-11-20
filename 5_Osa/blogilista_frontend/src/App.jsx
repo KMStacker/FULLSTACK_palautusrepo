@@ -209,7 +209,8 @@ const App = () => {
               handleDeleteBlog={() => handleDeleteBlog(blog.id)}
               user={user}
             />
-          )}
+          )
+        }
       </div>
       }
     </div>
