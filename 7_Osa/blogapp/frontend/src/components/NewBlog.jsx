@@ -33,7 +33,7 @@ const NewBlog = ({ doCreate }) => {
           <label>Title:</label>
           <input
             type="text"
-            data-testid='title'
+            data-testid="title"
             value={title}
             onChange={handleTitleChange}
           />
@@ -42,7 +42,7 @@ const NewBlog = ({ doCreate }) => {
           <label>URL:</label>
           <input
             type="text"
-            data-testid='url'
+            data-testid="url"
             value={url}
             onChange={handleUrlChange}
           />
@@ -51,7 +51,7 @@ const NewBlog = ({ doCreate }) => {
           <label>Author:</label>
           <input
             type="text"
-            data-testid='author'
+            data-testid="author"
             value={author}
             onChange={handleAuthorChange}
           />

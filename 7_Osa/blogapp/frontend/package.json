@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prettier": "prettier . --write"
   },
   "dependencies": {
     "axios": "^1.6.7",
@@ -30,6 +31,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "eslint-plugin-vitest-globals": "^1.4.0",
+    "prettier": "^3.6.2",
     "vite": "^4.4.5"
   }
 }

@@ -19,30 +19,28 @@ const Blog = ({ blog, handleVote, handleDelete }) => {
   console.log(blog.user, storage.me(), canRemove)
 
   return (
-    <div style={style} className='blog'>
+    <div style={style} className="blog">
       {blog.title} by {blog.author}
       <button style={{ marginLeft: 3 }} onClick={() => setVisible(!visible)}>
         {visible ? 'hide' : 'view'}
       </button>
       {visible && (
         <div>
-          <div><a href={blog.url}>{blog.url}</a></div>
+          <div>
+            <a href={blog.url}>{blog.url}</a>
+          </div>
           <div>
             likes {blog.likes}
-            <button
-              style={{ marginLeft: 3 }}
-              onClick={() => handleVote(blog)}
-            >
+            <button style={{ marginLeft: 3 }} onClick={() => handleVote(blog)}>
               like
             </button>
           </div>
           <div>{nameOfUser}</div>
-          {canRemove && <button onClick={() => handleDelete(blog)}>
-            remove
-          </button>}
+          {canRemove && (
+            <button onClick={() => handleDelete(blog)}>remove</button>
+          )}
         </div>
       )}
-
     </div>
   )
 }
@@ -55,7 +53,7 @@ Blog.propTypes = {
     user: PropTypes.object,
   }).isRequired,
   handleVote: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired
+  handleDelete: PropTypes.func.isRequired,
 }
 
 export default Blog

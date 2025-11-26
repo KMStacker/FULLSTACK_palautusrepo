@@ -9,14 +9,18 @@ describe('Blog', () => {
     title: 'Testing the testing',
     url: 'http://example.com',
     author: 'Ted Tester',
-    likes: 10
+    likes: 10,
   }
 
   test('renders only tile and author by default', () => {
     render(<Blog blog={blog} handleVote={vi.fn()} handleDelete={vi.fn()} />)
 
-    expect(screen.getByText('Testing the testing', { exact: false })).toBeDefined()
-    expect(screen.queryByText('http://example.com', { exact: false })).toBeNull()
+    expect(
+      screen.getByText('Testing the testing', { exact: false })
+    ).toBeDefined()
+    expect(
+      screen.queryByText('http://example.com', { exact: false })
+    ).toBeNull()
   })
 
   test('renders url and likes after clicking view', async () => {
@@ -26,7 +30,9 @@ describe('Blog', () => {
     const button = screen.getByText('view')
     await user.click(button)
 
-    expect(screen.getByText('http://example.com', { exact: false })).toBeDefined()
+    expect(
+      screen.getByText('http://example.com', { exact: false })
+    ).toBeDefined()
     expect(screen.getByText('likes 10', { exact: false })).toBeDefined()
   })
 

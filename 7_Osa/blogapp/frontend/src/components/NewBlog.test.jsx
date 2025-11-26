@@ -23,7 +23,7 @@ describe('NewBlog', () => {
     expect(doCreate.mock.calls[0][0]).toEqual({
       title: 'Testing the testing',
       url: 'http://example.com',
-      author: 'Ted Tester'
+      author: 'Ted Tester',
     })
   })
 })

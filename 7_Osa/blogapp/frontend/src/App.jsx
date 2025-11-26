@@ -15,9 +15,7 @@ const App = () => {
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -58,11 +56,11 @@ const App = () => {
     console.log('updating', blog)
     const updatedBlog = await blogService.update(blog.id, {
       ...blog,
-      likes: blog.likes + 1
+      likes: blog.likes + 1,
     })
 
     notify(`You liked ${updatedBlog.title} by ${updatedBlog.author}`)
-    setBlogs(blogs.map(b => b.id === blog.id ? updatedBlog : b))
+    setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)))
   }
 
   const handleLogout = () => {
@@ -74,7 +72,7 @@ const App = () => {
   const handleDelete = async (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       await blogService.remove(blog.id)
-      setBlogs(blogs.filter(b => b.id !== blog.id))
+      setBlogs(blogs.filter((b) => b.id !== blog.id))
       notify(`Blog ${blog.title}, by ${blog.author} removed`)
     }
   }
@@ -97,21 +95,19 @@ const App = () => {
       <Notification notification={notification} />
       <div>
         {user.name} logged in
-        <button onClick={handleLogout}>
-          logout
-        </button>
+        <button onClick={handleLogout}>logout</button>
       </div>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <NewBlog doCreate={handleCreate} />
       </Togglable>
-      {blogs.sort(byLikes).map(blog =>
+      {blogs.sort(byLikes).map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
           handleVote={handleVote}
           handleDelete={handleDelete}
         />
-      )}
+      ))}
     </div>
   )
 }
