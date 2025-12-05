@@ -51,7 +51,7 @@ const App = () => {
 
   const handleCreate = async (blog) => {
     dispatch(createBlog(blog))
-    notify(`Blog created: ${newBlog.title}, ${newBlog.author}`)
+    notify(`Blog created: ${blog.title}, ${blog.author}`)
     blogFormRef.current.toggleVisibility()
   }
 
@@ -103,7 +103,7 @@ const App = () => {
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <NewBlog doCreate={handleCreate} />
       </Togglable>
-      {blogs.sort(byLikes).map((blog) => (
+      {[...blogs].sort(byLikes).map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
