@@ -1,22 +1,25 @@
-import { useState, useEffect, createRef } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Routes, Route, Link } from 'react-router-dom'
 import { setNotification, clearNotification } from './reducers/notificationReducer'
 import { initializeBlogs, createBlog, likeBlog, deleteBlog } from './reducers/blogReducer'
 import { loginUser, logoutUser, checkLoggedUser } from './reducers/userReducer'
 
-import blogService from './services/blogs'
-import loginService from './services/login'
-import storage from './services/storage'
+import useNotify from './hooks/useNotify'
 import Login from './components/Login'
 import Blog from './components/Blog'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import Users from './components/Users'
+import BlogList from './components/BlogList'
+import User from './components/User'
+import SingleBlog from './components/SingleBlog'
 
 const App = () => {
-  const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+  const notify = useNotify()
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -25,15 +28,6 @@ const App = () => {
   useEffect(() => {
     dispatch(checkLoggedUser())
   }, [dispatch])
-
-  const blogFormRef = createRef()
-
-  const notify = (message, type = 'success') => {
-    dispatch(setNotification({ message, type }))
-    setTimeout(() => {
-      dispatch(clearNotification())
-    }, 5000)
-  }
 
   const handleLogin = async (credentials) => {
     try {
@@ -44,17 +38,9 @@ const App = () => {
     }
   }
 
-  const handleCreate = (blog) => {
+  const handleCreate = async (blog) => {
     dispatch(createBlog(blog))
     notify(`Blog created: ${blog.title}, ${blog.author}`)
-    blogFormRef.current.toggleVisibility()
-  }
-
-  const handleVote = async (blog) => {
-    console.log('updating', blog)
-    dispatch(likeBlog(blog))
-
-    notify(`You liked ${blog.title} by ${blog.author}`)
   }
 
   const handleLogout = () => {
@@ -62,44 +48,44 @@ const App = () => {
     notify(`Bye, ${user.name}!`)
   }
 
-  const handleDelete = (blog) => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      dispatch(deleteBlog(blog.id))
-      notify(`Blog ${blog.title}, by ${blog.author} removed`)
-    }
-  }
-
   if (!user) {
     return (
-      <div>
+      <div className='container'>
         <h2>blogs</h2>
         <Notification />
         <Login doLogin={handleLogin} />
       </div>
     )
   }
-
-  const byLikes = (a, b) => b.likes - a.likes
+  
+  const navBarStyle = {
+    display: 'flex',
+    gap: 5,
+    backgroundColor: '#e0e0e0ff',
+    marginTop: 5,
+    padding: 5,
+  }
 
   return (
-    <div>
-      <h2>blogs</h2>
-      <Notification />
-      <div>
-        {user.name} logged in
-        <button onClick={handleLogout}>logout</button>
+    <div className='container'>
+      <div className='nav'>
+        <Link to="/">blogs</Link> | <Link to="/users">users</Link>
+        <span style={{ marginLeft: 'auto' }}>
+          {user.name} logged in &nbsp;
+          <button className='btn logout' onClick={handleLogout}>logout</button>
+        </span>
       </div>
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <NewBlog doCreate={handleCreate} />
-      </Togglable>
-      {[...blogs].sort(byLikes).map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleVote={handleVote}
-          handleDelete={handleDelete}
-        />
-      ))}
+      <Notification />
+      <Routes>
+        <Route path="/users/:id" element={<User />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/" element={
+          <BlogList
+            handleCreate={handleCreate}
+          />
+        } />
+        <Route path="/blogs/:id" element={<SingleBlog />} />
+      </Routes>
     </div>
   )
 }

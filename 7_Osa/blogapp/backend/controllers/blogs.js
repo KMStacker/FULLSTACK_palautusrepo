@@ -70,4 +70,16 @@ router.put('/:id', async (request, response) => {
   response.json(updatedBlog)
 })
 
+router.post('/:id/comments', userExtractor, async (request, response) => {
+  const { comment } = request.body
+  const blog = await Blog.findById(request.params.id)
+  if (!blog) {
+    return response.status(404).json({ error: 'blog not found' })
+  }
+  blog.comments = blog.comments.concat(comment)
+  await blog.save()
+  const updatedBlog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1 })
+  response.status(201).json(updatedBlog)
+})
+
 module.exports = router
