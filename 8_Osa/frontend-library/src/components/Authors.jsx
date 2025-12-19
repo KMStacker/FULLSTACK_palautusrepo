@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
-import Select from 'react-select'
 
 const Authors = (props) => {
-  
+  const [name, setName] = useState('')
   const [born, setBorn] = useState('')
-  const [selectedOption, setSelectedOption] = useState(null)
 
   const result = useQuery(ALL_AUTHORS)
 
@@ -25,28 +23,24 @@ const Authors = (props) => {
 
   const authors = result.data.allAuthors
 
-  const options = authors.map(a => ({
-    value: a.name,
-    label: a.name
-  }))
-
   const submit = async (event) => {
     event.preventDefault()
 
-    if (!selectedOption) {
+    if (name === '') {
+      console.log('Ei nimeä valittu, keskeytetään')
       return
     }
 
-    console.log('update author...')
+    console.log('update author... ', name)
 
     editAuthor({
       variables: {
-        name: selectedOption.value,
+        name: name,
         setBornTo: parseInt(born)
       }
     })
 
-    setSelectedOption(null)
+    setName('')
     setBorn('')
   }
 
@@ -74,11 +68,16 @@ const Authors = (props) => {
       <form onSubmit={submit}>
         <div>
           name
-          <Select
-            value={selectedOption}
-            onChange={setSelectedOption}
-            options={options}
-          />
+          <select
+            value={name}
+            onChange={({ target }) => setName(target.value)}>
+            <option value="" disabled>choose author</option>
+            {authors.map(a => (
+              <option key={a.name} value={a.name}>
+                {a.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           born
