@@ -2,7 +2,11 @@ import { v1 as uuid } from "uuid";
 import patients from "../../data/patients";
 import { Patient, NoSsnPatient, NewPatient } from "../types";
 
-const patientsList: Patient[] = patients as Patient[];
+const patientsList: Patient[] = patients.map(o => {
+  const object = o as Patient;
+  object.entries = object.entries || [];
+  return object;
+});
 
 const getPatients = (): Patient[] => {
   return patientsList;
@@ -10,13 +14,18 @@ const getPatients = (): Patient[] => {
 
 const getNoSsnPatients = (): NoSsnPatient[] => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  return patientsList.map(({ ssn, ...patient }) => patient);
+  return patientsList.map(({ ssn, entries, ...patient }) => patient);
+};
+
+const getPatientById = ( id: string ): Patient | undefined => {
+  return patientsList.find(patient => patient.id === id);
 };
 
 const addPatient = ( entry: NewPatient ): Patient => {
   const newPatient = {
+    ...entry,
     id: uuid(),
-    ...entry
+    entries: [],
   };
   patientsList.push(newPatient);
   return newPatient;
@@ -25,5 +34,6 @@ const addPatient = ( entry: NewPatient ): Patient => {
 export default {
   getPatients,
   getNoSsnPatients,
+  getPatientById,
   addPatient
 };
